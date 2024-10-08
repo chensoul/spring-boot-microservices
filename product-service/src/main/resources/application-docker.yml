@@ -1,0 +1,18 @@
+server:
+  port: 8080
+spring:
+  data:
+    mongodb:
+      database: product-service
+      host: mongo
+      port: 27017
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-server:8761/eureka
+
+management:
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411

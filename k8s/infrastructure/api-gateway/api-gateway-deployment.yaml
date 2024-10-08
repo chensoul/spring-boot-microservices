@@ -21,14 +21,13 @@ spec:
               value: ' TRACE'
             - name: SPRING_PROFILES_ACTIVE
               value: docker
-          image: saiupadhyayula007/api-gateway:latest
+          image: chensoul/api-gateway:latest
           name: api-gateway
           ports:
             - containerPort: 8080
             - containerPort: 8181
           resources: {}
       restartPolicy: Always
-status: {}
 ---
 apiVersion: v1
 kind: Service
@@ -44,6 +43,4 @@ spec:
       targetPort: 8080
   selector:
     app: api-gateway
-status:
-  loadBalancer: {}
 

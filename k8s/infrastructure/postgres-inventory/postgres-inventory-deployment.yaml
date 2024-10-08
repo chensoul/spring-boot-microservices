@@ -52,8 +52,6 @@ spec:
       targetPort: 5432
   selector:
     app: postgres-inventory
-status:
-  loadBalancer: {}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -67,4 +65,3 @@ spec:
   resources:
     requests:
       storage: 100Mi
-status: {}

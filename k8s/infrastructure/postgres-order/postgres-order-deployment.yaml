@@ -42,7 +42,6 @@ spec:
         - name: postgres-order-claim0
           persistentVolumeClaim:
             claimName: postgres-order-claim0
-status: {}
 ---
 apiVersion: v1
 kind: Service
@@ -57,8 +56,6 @@ spec:
       targetPort: 5431
   selector:
     app: postgres-order
-status:
-  loadBalancer: {}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -72,4 +69,3 @@ spec:
   resources:
     requests:
       storage: 100Mi
-status: {}

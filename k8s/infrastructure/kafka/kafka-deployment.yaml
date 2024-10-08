@@ -2,24 +2,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: broker
-  name: broker
+    app: kafka
+  name: kafka
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: broker
+      app: kafka
   strategy: {}
   template:
     metadata:
 
       labels:
-        app: broker
+        app: kafka
     spec:
       containers:
         - env:
             - name: KAFKA_ADVERTISED_LISTENERS
-              value: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+              value: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
             - name: KAFKA_BROKER_ID
               value: "1"
             - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
@@ -33,12 +33,11 @@ spec:
             - name: KAFKA_ZOOKEEPER_CONNECT
               value: zookeeper:2181
           image: confluentinc/cp-kafka:7.0.1
-          name: broker
+          name: kafka
           ports:
             - containerPort: 9092
           resources: {}
       restartPolicy: Always
-status: {}
 ---
 apiVersion: v1
 kind: Service
@@ -46,16 +45,13 @@ metadata:
   annotations:
     kompose.cmd: F:\tools\kompose.exe convert
     kompose.version: 1.26.1 (a9d05d509)
-  creationTimestamp: null
   labels:
-    app: broker
-  name: broker
+    app: kafka
+  name: kafka
 spec:
   ports:
     - name: "9092"
       port: 9092
       targetPort: 9092
   selector:
-    app: broker
-status:
-  loadBalancer: {}
+    app: kafka

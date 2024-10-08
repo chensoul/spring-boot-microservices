@@ -23,7 +23,6 @@ spec:
             - containerPort: 9411
           resources: {}
       restartPolicy: Always
-status: {}
 ---
 apiVersion: v1
 kind: Service
@@ -38,5 +37,3 @@ spec:
       targetPort: 9411
   selector:
     app: zipkin
-status:
-  loadBalancer: {}

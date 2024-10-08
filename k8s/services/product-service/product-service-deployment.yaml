@@ -20,11 +20,10 @@ spec:
         - env:
             - name: SPRING_PROFILES_ACTIVE
               value: docker
-          image: saiupadhyayula007/product-service:latest
+          image: chensoul/product-service:latest
           name: product-service
           resources: {}
       restartPolicy: Always
-status: {}
 ---
 apiVersion: v1
 kind: Service
@@ -39,5 +38,3 @@ spec:
       targetPort: 9194
   selector:
     app: product-service
-status:
-  loadBalancer: {}

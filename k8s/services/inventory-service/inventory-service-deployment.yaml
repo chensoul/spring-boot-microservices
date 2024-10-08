@@ -22,11 +22,10 @@ spec:
               value: jdbc:postgresql://postgres-inventory:5432/inventory-service
             - name: SPRING_PROFILES_ACTIVE
               value: docker
-          image: saiupadhyayula007/inventory-service:latest
+          image: chensoul/inventory-service:latest
           name: inventory-service
           resources: {}
       restartPolicy: Always
-status: {}
 ---
 apiVersion: v1
 kind: Service
@@ -41,5 +40,3 @@ spec:
       targetPort: 9191
   selector:
     app: inventory-service
-status:
-  loadBalancer: {}
