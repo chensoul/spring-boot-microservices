@@ -67,7 +67,7 @@ services:
 
   ## Eureka Server
   discovery-server:
-    image: microservices-tutorial/discovery-server:latest
+    image: chensoul/discovery-server:latest
     restart: always
     ports:
       - "8761:8761"
@@ -77,7 +77,7 @@ services:
       - zipkin
 
   auth-server:
-    image: microservices-tutorial/auth-server:latest
+    image: chensoul/auth-server:latest
     restart: always
     ports:
       - "9999:9999"
@@ -88,7 +88,7 @@ services:
       - zipkin
 
   api-gateway:
-    image: microservices-tutorial/api-gateway:latest
+    image: chensoul/api-gateway:latest
     restart: always
     ports:
       - "8181:8080"
@@ -102,7 +102,7 @@ services:
 
   ## Product-Service Docker Compose Config
   product-service:
-    image: microservices-tutorial/product-service:latest
+    image: chensoul/product-service:latest
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -113,7 +113,7 @@ services:
 
   ## Order-Service Docker Compose Config
   order-service:
-    image: microservices-tutorial/order-service:latest
+    image: chensoul/order-service:latest
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -127,7 +127,7 @@ services:
 
   ## Inventory-Service Docker Compose Config
   inventory-service:
-    image: microservices-tutorial/inventory-service:latest
+    image: chensoul/inventory-service:latest
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -139,7 +139,7 @@ services:
 
   ## Notification-Service Docker Compose Config
   notification-service:
-    image: microservices-tutorial/notification-service:latest
+    image: chensoul/notification-service:latest
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
