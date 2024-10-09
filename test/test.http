@@ -1,0 +1,24 @@
+### login
+
+POST http://client:secret@localhost:9000/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials & scope=read
+
+> {% client.global.set("access_token", response.body.access_token); %}
+
+### Get Product
+GET http://localhost:9000/api/product
+Authorization: Bearer {{access_token}}
+
+
+### Create Order
+POST http://localhost:9000/api/order
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+    "skuCode": "iphone_15",
+    "price": 1000,
+    "quantity": 1
+}

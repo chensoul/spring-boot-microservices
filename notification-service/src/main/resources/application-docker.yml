@@ -2,11 +2,10 @@ spring:
   kafka:
     bootstrap-servers: kafka:29092
 
-
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://discovery-server:8761/eureka
+      defaultZone: http://eureka:password@eureka:8761/eureka
 
 management:
   zipkin:

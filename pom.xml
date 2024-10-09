@@ -20,10 +20,10 @@
         <module>product-service</module>
         <module>order-service</module>
         <module>inventory-service</module>
-        <module>discovery-server</module>
-        <module>api-gateway</module>
+        <module>eureka</module>
+        <module>gateway</module>
         <module>notification-service</module>
-        <module>authorization-server</module>
+        <module>authorization</module>
     </modules>
 
     <properties>
@@ -50,6 +50,17 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <image>
+                        <name>chensoul/${project.artifactId}</name>
+                        <builder>dashaun/builder:tiny</builder>
+                        <publish>true</publish>
+                    </image>
+                    <docker>
+                        <publishRegistry>
+                            <username>chensoul</username>
+                            <password>${dockerPassword}</password>
+                        </publishRegistry>
+                    </docker>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -60,7 +71,6 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>repackage</goal>
                             <goal>build-info</goal>
                         </goals>
                     </execution>
@@ -73,7 +83,7 @@
                 <version>3.4.2</version>
                 <configuration>
                     <from>
-                        <image>eclipse-temurin:21-jre</image>
+                        <image>eclipse-temurin:21-jre-jammy</image>
                     </from>
                     <to>
                         <image>chensoul/${project.artifactId}</image>

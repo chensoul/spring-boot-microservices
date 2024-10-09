@@ -1,14 +1,12 @@
 server:
-  port: 8084
+  port: 8080
 
 spring:
   application:
     name: product-service
   data:
     mongodb:
-      database: product-service
-      host: localhost
-      port: 27017
+      uri: mongodb://root:password@localhost:27017/product_service?authSource=admin
 
 eureka:
   client:

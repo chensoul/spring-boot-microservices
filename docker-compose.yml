@@ -1,42 +1,25 @@
 services:
-  ## Postgres Docker Compose Config
-  postgres-order:
-    image: postgres
-    restart: always
+  mysql:
+    image: mysql:8
     environment:
-      POSTGRES_DB: order-service
-      POSTGRES_USER: ptechie
-      POSTGRES_PASSWORD: password
-    volumes:
-      - ./data/postgres-order:/var/lib/postgresql/data
+      MYSQL_ROOT_PASSWORD: mysql
     ports:
-      - "5431:5431"
-    command: -p 5431
-
-  postgres-inventory:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_DB: inventory-service
-      POSTGRES_USER: ptechie
-      POSTGRES_PASSWORD: password
+      - "3306:3306"
     volumes:
-      - ./data/postgres-inventory:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+      - ./data/mysql:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
-  ## Mongo Docker Compose Config
-  mongo:
-    image: mongo
+  mongodb:
+    image: mongo:7
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
-      MONGO_INITDB_DATABASE: product-service
+      MONGO_INITDB_DATABASE: product_service
     ports:
       - "27017:27017"
     volumes:
-      - ./data/mongo-data:/data/db
+      - ./data/mongodb:/data/db
 
   zookeeper:
     image: confluentinc/cp-zookeeper
@@ -63,120 +46,122 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
-  ## Zipkin
+  schema-registry:
+    image: confluentinc/cp-schema-registry
+    hostname: schema-registry
+    depends_on:
+      - kafka
+    ports:
+      - "8085:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka:29092'
+      SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8081
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "8086:8080"
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_CLUSTERS_NAME: local
+      KAFKA_CLUSTERS_BOOTSTRAPSERVERS: kafka:29092
+      #      KAFKA_CLUSTERS_SCHEMAREGISTRY: http://schema-registry:8081
+      DYNAMIC_CONFIG_ENABLED: 'true'
+
   zipkin:
     image: openzipkin/zipkin
     ports:
       - "9411:9411"
 
-  ## Eureka Server
-  discovery-server:
-    image: chensoul/discovery-server:latest
-    restart: always
-    ports:
-      - "8761:8761"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - zipkin
-
-  auth-server:
-    image: chensoul/auth-server:latest
-    restart: always
-    ports:
-      - "9999:9999"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
-    depends_on:
-      - zipkin
-
-  api-gateway:
-    image: chensoul/api-gateway:latest
-    restart: always
-    ports:
-      - "8181:8080"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
-    depends_on:
-      - zipkin
-      - discovery-server
-      - auth-server
-
-  ## Product-Service Docker Compose Config
-  product-service:
-    image: chensoul/product-service:latest
-    restart: always
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - mongo
-      - discovery-server
-      - api-gateway
-
-  ## Order-Service Docker Compose Config
-  order-service:
-    image: chensoul/order-service:latest
-    restart: always
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-order:5431/order-service
-    depends_on:
-      - postgres-order
-      - kafka
-      - zipkin
-      - discovery-server
-      - api-gateway
-
-  ## Inventory-Service Docker Compose Config
-  inventory-service:
-    image: chensoul/inventory-service:latest
-    restart: always
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-inventory:5432/inventory-service
-    depends_on:
-      - postgres-inventory
-      - discovery-server
-      - api-gateway
-
-  ## Notification-Service Docker Compose Config
-  notification-service:
-    image: chensoul/notification-service:latest
-    restart: always
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - zipkin
-      - kafka
-      - discovery-server
-      - api-gateway
-
-  ## Prometheus
   prometheus:
-    image: prom/prometheus:v2.37.1
+    image: prom/prometheus
     restart: always
+    command:
+      - --enable-feature=exemplar-storage
+      - --config.file=/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    depends_on:
-      - product-service
-      - inventory-service
-      - order-service
-      - notification-service
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 
   grafana:
-    image: grafana/grafana-oss:8.5.2
+    image: grafana/grafana-oss
     restart: always
     ports:
       - "3000:3000"
     links:
       - prometheus:prometheus
     volumes:
-      - ./data/grafana:/var/lib/grafana
+      - ./docker/grafana:/etc/grafana/provisioning/datasources:ro
     environment:
-      - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=password
+      - GF_SECURITY_ADMIN_PASSWORD=pass
+
+
+  eureka:
+    image: chensoul/eureka:latest
+    restart: always
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  authorization:
+    image: chensoul/authorization:latest
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
+    depends_on:
+      - eureka
+
+  gateway:
+    image: chensoul/gateway:latest
+    restart: always
+    ports:
+      - "9000:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
+    depends_on:
+      - eureka
+      - authorization
+
+  product-service:
+    image: chensoul/product-service:latest
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - eureka
+      - gateway
+
+  order-service:
+    image: chensoul/order-service:latest
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - eureka
+      - gateway
+
+  inventory-service:
+    image: chensoul/inventory-service:latest
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - eureka
+      - gateway
+
+  notification-service:
+    image: chensoul/notification-service:latest
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - eureka
+      - gateway
