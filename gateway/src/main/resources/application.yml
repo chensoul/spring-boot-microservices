@@ -1,6 +1,10 @@
 server:
   port: 9000
 
+app.eureka: localhost
+app.zipkin: localhost
+app.authorization: localhost
+
 spring:
   application:
     name: gateway
@@ -38,39 +42,33 @@ spring:
         - id: eureka-web
           predicates:
             - Path=/eureka/web
-          uri: http://eureka:password@${app.eureka-server}:8761
+          uri: http://${app.eureka}:8761
           filters:
             - SetPath=/
 
         - id: eureka-static
           predicates:
             - Path=/eureka/**
-          uri: http://eureka:password@${app.eureka-server}:8761
+          uri: http://${app.eureka}:8761
 
-spring.security.oauth2.resourceserver.jwt.issuer-uri: http://localhost:9999
+spring.security.oauth2.resourceserver.jwt.issuer-uri: http://${app.authorization}:9999
 
-app:
-  eureka-server: localhost
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://eureka:password@localhost:8761/eureka
+eureka.client.serviceUrl.defaultZone: http://${app.eureka}:8761/eureka
 
 management:
   endpoints:
     web:
       exposure:
-        include: prometheus
+        include: "*"
   tracing:
     sampling:
       probability: 1.0
   zipkin:
     tracing:
-      endpoint: http://localhost:9411
+      endpoint: http://${app.zipkin}:9411
 
 logging:
   level:
     org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
-    org.springframework.cloud.gateway: TRACE
+    org.springframework.security: TRACE
     org.springframework.web.server.adapter.HttpWebHandlerAdapter: TRACE

@@ -1,4 +1,4 @@
-package com.programming.techie.authserver.config;
+package com.programming.techie.authorization.config;
 
 import lombok.Getter;
 import lombok.Setter;

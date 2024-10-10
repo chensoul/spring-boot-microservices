@@ -1,4 +1,4 @@
-ACCESS_TOKEN=$(curl -k http://client:secret@localhost:9000/oauth2/token -d grant_type=client_credentials -d scope="read write" -s | jq .access_token -r)
+ACCESS_TOKEN=$(curl -k http://client:secret@localhost:9000/oauth2/token -d grant_type=client_credentials -d scope="read" -s | jq .access_token -r)
 
 echo $ACCESS_TOKEN
 

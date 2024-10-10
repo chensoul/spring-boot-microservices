@@ -1,16 +1,17 @@
-package com.programming.techie.authserver.config;
+package com.programming.techie.authorization.config;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import com.programming.techie.authserver.jose.Jwks;
+import com.programming.techie.authorization.jose.Jwks;
 import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -46,6 +47,9 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 @Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfig {
   private final JwtConfigProperties jwtConfigProperties;
+
+  @Value("${app.authorization}")
+  private String authorizationHost;
 
   @Bean
   @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -120,7 +124,7 @@ public class AuthorizationServerConfig {
 
   @Bean
   public AuthorizationServerSettings authorizationServerSettings() {
-    return AuthorizationServerSettings.builder().issuer("http://localhost:9999").build();
+    return AuthorizationServerSettings.builder().issuer("http://" + authorizationHost + ":9999").build();
   }
 
   private Consumer<List<AuthenticationProvider>> configureAuthenticationValidator() {

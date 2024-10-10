@@ -1,4 +1,4 @@
-package com.programming.techie.authserver.jose;
+package com.programming.techie.authorization.jose;
 
 import com.nimbusds.jose.jwk.Curve;
 import com.nimbusds.jose.jwk.ECKey;

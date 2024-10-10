@@ -1,4 +1,4 @@
-package com.programming.techie.authserver.jose;
+package com.programming.techie.authorization.jose;
 
 import java.math.BigInteger;
 import java.security.KeyPair;

@@ -3,6 +3,10 @@ server.forward-headers-strategy: framework
 
 spring.application.name: authorization
 
+app.eureka: localhost
+app.zipkin: localhost
+app.authorization: localhost
+
 jwt.publicKey: classpath:app.pub
 # DO NOT Store private key in the Git Repository
 # This is a sample application, and I added it only for demonstration purposes
@@ -11,7 +15,7 @@ jwt.privateKey: classpath:app.key
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka:password@localhost:8761/eureka
+      defaultZone: http://${app.eureka}:8761/eureka
     initialInstanceInfoReplicationIntervalSeconds: 5
     registryFetchIntervalSeconds: 5
   instance:
@@ -28,7 +32,7 @@ management:
       probability: 1.0
   zipkin:
     tracing:
-      endpoint: http://localhost:9411
+      endpoint: http://${app.zipkin}:9411
 
 logging:
   level:

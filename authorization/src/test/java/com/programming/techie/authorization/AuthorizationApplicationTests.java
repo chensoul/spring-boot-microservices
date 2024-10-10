@@ -1,4 +1,4 @@
-package com.programming.techie.authserver;
+package com.programming.techie.authorization;
 
 import java.util.Base64;
 import static org.hamcrest.core.Is.is;
@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(properties = {"eureka.client.enabled=false", "spring.cloud.config.enabled=false"})
 @AutoConfigureMockMvc
-class AuthorizationServerApplicationTests {
+class AuthorizationApplicationTests {
 
   @Autowired
   MockMvc mvc;

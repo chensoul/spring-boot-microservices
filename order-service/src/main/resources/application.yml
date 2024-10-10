@@ -1,12 +1,18 @@
 server:
   port: 8081
 
+app.eureka: localhost
+app.zipkin: localhost
+app.authorization: localhost
+app.mysql: localhost
+app.kafka: localhost
+
 spring:
   application:
     name: order-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/order_service
+    url: jdbc:mysql://${app.mysql}:3306/order_service
     username: root
     password: mysql
   jpa:
@@ -14,7 +20,7 @@ spring:
       ddl-auto: none
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${app.kafka}:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -26,10 +32,7 @@ spring:
     template:
       default-topic: notificationTopic
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://eureka:password@localhost:8761/eureka
+eureka.client.serviceUrl.defaultZone: http://${app.eureka}:8761/eureka
 
 management:
   endpoint:
@@ -47,7 +50,7 @@ management:
       probability: 1.0
   zipkin:
     tracing:
-      endpoint: http://localhost:9411
+      endpoint: http://${app.zipkin}:9411
 
 resilience4j:
   circuitbreaker:

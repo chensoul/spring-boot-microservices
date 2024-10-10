@@ -108,6 +108,8 @@ services:
       - "8761:8761"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - zipkin
 
   authorization:
     image: chensoul/authorization:latest
@@ -137,7 +139,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - eureka
-      - gateway
+      - mongodb
 
   order-service:
     image: chensoul/order-service:latest
@@ -146,7 +148,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - eureka
-      - gateway
+      - mysql
 
   inventory-service:
     image: chensoul/inventory-service:latest
@@ -155,7 +157,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - eureka
-      - gateway
+      - mysql
 
   notification-service:
     image: chensoul/notification-service:latest
@@ -164,4 +166,5 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - eureka
-      - gateway
+      - kafka
+
