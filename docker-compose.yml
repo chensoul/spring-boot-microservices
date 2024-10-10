@@ -6,7 +6,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./data/mysql:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
       - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   mongodb:
@@ -19,7 +19,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - ./data/mongodb:/data/db
+      - mongodb_data:/data/db
 
   zookeeper:
     image: confluentinc/cp-zookeeper
@@ -124,7 +124,7 @@ services:
     image: chensoul/gateway:latest
     restart: always
     ports:
-      - "9000:8080"
+      - "9000:9000"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
@@ -168,3 +168,6 @@ services:
       - eureka
       - kafka
 
+volumes:
+  mysql_data:
+  mongodb_data:
