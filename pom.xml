@@ -75,14 +75,14 @@
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <version>3.4.3</version>
+                <version>3.4.4</version>
                 <configuration>
-                    <to>
-                        <image>${env.USER}/${project.artifactId}</image>
-                    </to>
                     <from>
                         <image>eclipse-temurin:21-jre-jammy</image>
                     </from>
+                    <to>
+                        <image>${env.USER}/${project.parent.artifactId}-${project.artifactId}</image>\
+                    </to>
                 </configuration>
             </plugin>
         </plugins>
