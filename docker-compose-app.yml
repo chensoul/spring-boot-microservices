@@ -7,16 +7,8 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
 
-  authorization:
-    image: chensoul/authorization
-    restart: always
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - eureka-server
-
-  gateway:
-    image: chensoul/gateway
+  api-gateway:
+    image: chensoul/api-gateway
     restart: always
     ports:
       - "9000:9000"

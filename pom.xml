@@ -21,9 +21,8 @@
         <module>order-service</module>
         <module>inventory-service</module>
         <module>eureka-server</module>
-        <module>gateway</module>
+        <module>api-gateway</module>
         <module>notification-service</module>
-        <module>authorization</module>
     </modules>
 
     <properties>
@@ -81,7 +80,7 @@
                         <image>eclipse-temurin:21-jre-jammy</image>
                     </from>
                     <to>
-                        <image>${env.USER}/${project.parent.artifactId}-${project.artifactId}</image>\
+                        <image>${env.USER}/${project.artifactId}</image>\
                     </to>
                 </configuration>
             </plugin>
