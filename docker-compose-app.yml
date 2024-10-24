@@ -1,6 +1,6 @@
 services:
   eureka-server:
-    image: chensoul/eureka-server
+    image: chensoul/sbm-eureka-server
     restart: always
     ports:
       - "8761:8761"
@@ -8,7 +8,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
 
   api-gateway:
-    image: chensoul/api-gateway
+    image: chensoul/sbm-api-gateway
     restart: always
     ports:
       - "9000:9000"
@@ -19,7 +19,7 @@ services:
       - authorization
 
   product-service:
-    image: chensoul/product-service
+    image: chensoul/sbm-product-service
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -27,7 +27,7 @@ services:
       - eureka-server
 
   order-service:
-    image: chensoul/order-service
+    image: chensoul/sbm-order-service
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -35,7 +35,7 @@ services:
       - eureka-server
 
   inventory-service:
-    image: chensoul/inventory-service
+    image: chensoul/sbm-inventory-service
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -43,7 +43,7 @@ services:
       - eureka-server
 
   notification-service:
-    image: chensoul/notification-service
+    image: chensoul/sbm-notification-service
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker

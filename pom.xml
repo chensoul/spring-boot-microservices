@@ -80,7 +80,7 @@
                         <image>eclipse-temurin:21-jre-jammy</image>
                     </from>
                     <to>
-                        <image>${env.USER}/${project.artifactId}</image>\
+                        <image>${env.USER}/sbm-${project.artifactId}</image>\
                     </to>
                 </configuration>
             </plugin>

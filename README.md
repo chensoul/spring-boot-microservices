@@ -76,7 +76,7 @@ The above command will build and package the services into a docker container an
 2. Run the following command to start the applications.
 
 ```shell
-docker-compose -f docker-compose.yml docker-compose-app.yml docker-compose-zipkin.yml docker-compose-monitor.yml up -d
+docker-compose -f docker-compose.yml docker-compose-app.yml up -d
 ```
 
 ## How to run the services without Docker
