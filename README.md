@@ -64,7 +64,7 @@ mvn spring-boot:build-image -DskipTests \
   -Dspring-boot.build-image.builder=paketobuildpacks/builder-jammy-full \
   -Dspring-boot.build-image.publish=true \
   -Ddocker.publishRegistry.username=chensoul \
-  -Ddocker.publishRegistry.password=dckr_pat_SteG1JLrOlq-7FddtywJsf6mD-Q
+  -Ddocker.publishRegistry.password=xxxx
 ```
 
 - `spring-boot.build-image.publish` is a flag that tells maven to push the docker image to your docker hub account.
