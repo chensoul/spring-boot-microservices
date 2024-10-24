@@ -3,6 +3,7 @@ services:
     image: mysql:9.1
     environment:
       MYSQL_ROOT_PASSWORD: pass
+      MONGO_INITDB_DATABASE: microservices
     ports:
       - "3306:3306"
     volumes:
@@ -17,7 +18,7 @@ services:
     image: mongo:8.0.1
     restart: always
     environment:
-      MONGO_INITDB_DATABASE: product_service
+      MONGO_INITDB_DATABASE: microservices
       MONGO_INITDB_ROOT_USERNAME: user
       MONGO_INITDB_ROOT_PASSWORD: pass
     ports:

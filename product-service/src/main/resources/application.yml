@@ -8,7 +8,7 @@ spring:
       host: localhost
       username: user
       password: pass
-      database: product_service
+      database: microservices
       authentication-database: admin
 
 management.endpoint.health.show-details: "ALWAYS"
