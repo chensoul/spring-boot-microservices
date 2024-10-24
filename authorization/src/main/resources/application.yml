@@ -3,8 +3,6 @@ server.forward-headers-strategy: framework
 
 spring.application.name: authorization
 
-app.eureka: localhost
-app.zipkin: localhost
 app.authorization: localhost
 
 jwt.publicKey: classpath:app.pub
@@ -15,18 +13,18 @@ jwt.privateKey: classpath:app.key
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://${app.eureka}:8761/eureka
+      defaultZone: http://localhost:8761/eureka
     initialInstanceInfoReplicationIntervalSeconds: 5
     registryFetchIntervalSeconds: 5
   instance:
     leaseRenewalIntervalInSeconds: 5
     leaseExpirationDurationInSeconds: 5
 
-# WARNING: Exposing all management endpoints over http should only be used during development, must be locked down in production!
 management.endpoint.health.show-details: "ALWAYS"
 management.endpoints.web.exposure.include: "*"
 management.endpoint.health.probes.enabled: true
 management.metrics.tags.application: ${spring.application.name}
+
 management.zipkin.tracing.endpoint: http://localhost:9411/api/v2/spans
 management.tracing.sampling.probability: 1.0
 

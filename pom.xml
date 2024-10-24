@@ -20,7 +20,7 @@
         <module>product-service</module>
         <module>order-service</module>
         <module>inventory-service</module>
-        <module>eureka</module>
+        <module>eureka-server</module>
         <module>gateway</module>
         <module>notification-service</module>
         <module>authorization</module>
@@ -70,20 +70,19 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.4.3</version>
                 <configuration>
-                    <image>
-                        <name>chensoul/${project.artifactId}</name>
-                        <env>
-                            <!-- Make sure `mvn spring-boot:build-image` uses the Java version defined in this project -->
-                            <BP_JVM_VERSION>${java.version}</BP_JVM_VERSION>
-                        </env>
-                    </image>
-                    <docker>
-                        <publishRegistry>
-                            <username>${docker.publishRegistry.username}</username>
-                            <password>${docker.publishRegistry.password}</password>
-                        </publishRegistry>
-                    </docker>
+                    <to>
+                        <image>${env.USER}/${project.artifactId}</image>
+                    </to>
+                    <from>
+                        <image>eclipse-temurin:21-jre-jammy</image>
+                    </from>
                 </configuration>
             </plugin>
         </plugins>

@@ -6,11 +6,11 @@ app.zipkin: localhost
 
 spring:
   application:
-    name: eureka
+    name: eureka-server
   security:
     user:
       name: eureka
-      password: password
+      password: pass
 
 eureka:
   client:
@@ -21,10 +21,10 @@ eureka:
   instance:
     hostname: localhost
 
-# WARNING: Exposing all management endpoints over http should only be used during development, must be locked down in production!
 management.endpoint.health.show-details: "ALWAYS"
 management.endpoints.web.exposure.include: "*"
 management.endpoint.health.probes.enabled: true
 management.metrics.tags.application: ${spring.application.name}
-management.zipkin.tracing.endpoint: http://localhost:9411/api/v2/spans
+
 management.tracing.sampling.probability: 1.0
+management.zipkin.tracing.endpoint: http://localhost:9411/api/v2/spans

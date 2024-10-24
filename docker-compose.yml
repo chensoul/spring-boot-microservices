@@ -1,12 +1,12 @@
 services:
   mysql:
-    image: mysql:8
+    image: mysql:9.1
     environment:
-      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_ROOT_PASSWORD: pass
     ports:
       - "3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql:/var/lib/mysql
       - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: "/usr/bin/mysql --user=root --password=mysql --execute \"SHOW DATABASES;\""
@@ -15,16 +15,16 @@ services:
       retries: 10
 
   mongodb:
-    image: mongo:7
+    image: mongo:8.0.1
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
       MONGO_INITDB_DATABASE: product_service
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: pass
     ports:
       - "27017:27017"
     volumes:
-      - mongodb_data:/data/db
+      - mongodb:/data/db
     healthcheck:
       test: "mongostat -n 1"
       interval: 5s
@@ -32,7 +32,7 @@ services:
       retries: 10
 
   zookeeper:
-    image: confluentinc/cp-zookeeper
+    image: confluentinc/cp-zookeeper:7.7.1
     restart: always
     ports:
       - "2181:2181"
@@ -41,7 +41,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
-    image: confluentinc/cp-kafka
+    image: confluentinc/cp-kafka:7.7.1
     restart: always
     ports:
       - "9092:9092"
@@ -56,103 +56,6 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
-  zipkin:
-    image: openzipkin/zipkin
-    ports:
-      - "9411:9411"
-
-  prometheus:
-    image: prom/prometheus
-    restart: always
-    command:
-      - --enable-feature=exemplar-storage
-      - --config.file=/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-
-  grafana:
-    image: grafana/grafana-oss
-    restart: always
-    ports:
-      - "3000:3000"
-    links:
-      - prometheus:prometheus
-    volumes:
-      - ./docker/grafana:/etc/grafana/provisioning/datasources:ro
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=pass
-
-
-  eureka:
-    image: chensoul/eureka:latest
-    restart: always
-    ports:
-      - "8761:8761"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - zipkin
-
-  authorization:
-    image: chensoul/authorization:latest
-    restart: always
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
-    depends_on:
-      - eureka
-
-  gateway:
-    image: chensoul/gateway:latest
-    restart: always
-    ports:
-      - "9000:9000"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
-    depends_on:
-      - eureka
-      - authorization
-
-  product-service:
-    image: chensoul/product-service:latest
-    restart: always
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - eureka
-      - mongodb
-
-  order-service:
-    image: chensoul/order-service:latest
-    restart: always
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - eureka
-      - mysql
-
-  inventory-service:
-    image: chensoul/inventory-service:latest
-    restart: always
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - eureka
-      - mysql
-
-  notification-service:
-    image: chensoul/notification-service:latest
-    restart: always
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - eureka
-      - kafka
-
 volumes:
-  mysql_data:
-  mongodb_data:
+  mysql:
+  mongodb:

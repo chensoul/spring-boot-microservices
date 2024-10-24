@@ -1,3 +1,5 @@
-app.eureka: eureka
-app.zipkin: zipkin
 app.authorization: authorization
+
+management.zipkin.tracing.endpoint: http://zipkin:9411/api/v2/spans
+
+eureka.client.serviceUrl.defaultZone: http://eureka-server:8761/eureka

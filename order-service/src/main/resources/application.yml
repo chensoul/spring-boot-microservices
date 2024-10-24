@@ -1,26 +1,20 @@
 server:
   port: 8081
 
-app.eureka: localhost
-app.zipkin: localhost
-app.authorization: localhost
-app.mysql: localhost
-app.kafka: localhost
-
 spring:
   application:
     name: order-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${app.mysql}:3306/order_service
+    url: jdbc:mysql://localhost:3306/order_service
     username: root
-    password: mysql
+    password: pass
   jpa:
     hibernate:
       ddl-auto: none
 
   kafka:
-    bootstrap-servers: ${app.kafka}:9092
+    bootstrap-servers: localhost:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -32,13 +26,11 @@ spring:
     template:
       default-topic: notificationTopic
 
-eureka.client.serviceUrl.defaultZone: http://${app.eureka}:8761/eureka
-
-# WARNING: Exposing all management endpoints over http should only be used during development, must be locked down in production!
 management.endpoint.health.show-details: "ALWAYS"
 management.endpoints.web.exposure.include: "*"
 management.endpoint.health.probes.enabled: true
 management.metrics.tags.application: ${spring.application.name}
+
 management.zipkin.tracing.endpoint: http://localhost:9411/api/v2/spans
 management.tracing.sampling.probability: 1.0
 

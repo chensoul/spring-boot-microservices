@@ -11,7 +11,6 @@ grant_type=client_credentials & scope=read
 GET http://localhost:9000/api/product
 Authorization: Bearer {{access_token}}
 
-
 ### Create Order
 POST http://localhost:9000/api/order
 Content-Type: application/json

@@ -1,28 +1,20 @@
-server.port: 8080
-
-app.eureka: localhost
-app.zipkin: localhost
-app.authorization: localhost
-app.mysql: localhost
-app.kafka: localhost
-app.mongodb: localhost
+server.port: 8084
 
 spring:
   application:
     name: product-service
   data:
     mongodb:
-      host: ${app.mongodb}
-      username: root
-      password: password
+      host: localhost
+      username: user
+      password: pass
       database: product_service
+      authentication-database: admin
 
-eureka.client.serviceUrl.defaultZone: http://${app.eureka}:8761/eureka
-
-# WARNING: Exposing all management endpoints over http should only be used during development, must be locked down in production!
 management.endpoint.health.show-details: "ALWAYS"
 management.endpoints.web.exposure.include: "*"
 management.endpoint.health.probes.enabled: true
 management.metrics.tags.application: ${spring.application.name}
+
 management.zipkin.tracing.endpoint: http://localhost:9411/api/v2/spans
 management.tracing.sampling.probability: 1.0

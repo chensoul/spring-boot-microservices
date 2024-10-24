@@ -1,0 +1,59 @@
+services:
+  eureka-server:
+    image: chensoul/eureka-server
+    restart: always
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  authorization:
+    image: chensoul/authorization
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - eureka-server
+
+  gateway:
+    image: chensoul/gateway
+    restart: always
+    ports:
+      - "9000:9000"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - eureka-server
+      - authorization
+
+  product-service:
+    image: chensoul/product-service
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - eureka-server
+
+  order-service:
+    image: chensoul/order-service
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - eureka-server
+
+  inventory-service:
+    image: chensoul/inventory-service
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - eureka-server
+
+  notification-service:
+    image: chensoul/notification-service
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - eureka-server
