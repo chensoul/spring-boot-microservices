@@ -7,37 +7,38 @@ This repository contains the latest source code of the spring-boot-microservices
 
 You can watch the tutorial on Youtube [here](https://www.youtube.com/watch?v=mPPhcU7oWDU&t=20634s)
 
-## Services Overview
+## Modules
 
-- Product Service
-- Order Service
-- Inventory Service
-- Notification Service
-- Gateway using Spring Cloud Gateway
-- Authorization using Spring Security OAuth2
-- Service Discovery using Eureka
+- **api-gateway**：This service is an API Gateway to the internal backend services
+  - **TechStack**: Spring Boot, Spring Cloud Gateway
+- **eureka-server**：This service is a centralized configuration server for all the services
+  - TechStack: Spring Boot, Spring Cloud Netflix Eureka
+- **inventory-service**：This services provides REST API for managing inventory.
+  - **TechStack**: Spring Boot, Spring Data JPA, MySQL, Flywaydb, Prometheus, Zipkin
+- **notification-service**：This services provides REST API for sending notifications.
+  - **TechStack**: Spring Boot, Spring Kafka
+- **order-service**：This services provides REST API for managing orders.
+  - **TechStack**: Spring Boot, Spring Data JPA, MySQL, Flywaydb, Prometheus, Zipkin, Spring Kafka, Spring Cloud CircuitBreaker, Resilience4J, Spring WebFlux
+- **product-service**：This services provides REST API for managing products and catalogs.
+  - **TechStack**: Spring Boot, Spring Data JPA, Mongodb, Prometheus, Zipkin
 
 ## Tech Stack
+* Building Spring Boot REST APIs
+* Database Persistence using Spring Data JPA, MySQL, Mongodb, Flyway
+* Distributed Tracing using Zipkin
+* Event Driven Async Communication using Spring Kafka
+* Implementing API Gateway using Spring Cloud Gateway
+* Implementing Resiliency using Resilience4j
+* Using WebClient, Declarative HTTP Interfaces to invoke other APIs
+* Local Development Setup using Docker, Docker Compose and Testcontainers
+* Monitoring & Observability using Grafana, Prometheus, Loki
+* Testing using JUnit 5, RestAssured, Testcontainers, Awaitility, WireMock
 
-The technologies used in this project are:
-
-- Java: 21
-- Maven: 3.9.9
-- MySQL: 9.1
-- MongoDB: 8.0.1
-- Kafka: [Event Driven Architecture Pattern](https://microservices.io/patterns/data/event-driven-architecture.html)
-- Spring Boot: 3.3.4
-- Spring Cloud OpenFeign
-  Feign: [Synchronous Inter-Service Communication Pattern](https://microservices.io/patterns/communication-style/rpi.html)
-- Spring Cloud Netflix Eureka: [Service Discovery Pattern](https://microservices.io/patterns/server-side-discovery.html)
-- Spring Cloud Gateway: [API Gateway Pattern](https://microservices.io/patterns/apigateway.html)
-- Spring Security OAuth2: [Microservices Security](https://microservices.io/patterns/security/access-token.html)
-- Spring Cloud CircuitBreaker with
-  Resilience4J: [Circuit Breaker Pattern](https://microservices.io/patterns/reliability/circuit-breaker.html)
-- Grafana Stack (Prometheus, Grafana): [Monitoring](https://microservices.io/patterns/observability/monitoring.html)
-- Zipkin: [Distributed Tracing](https://microservices.io/patterns/observability/distributed-tracing.html)
-- Test Containers with Wiremock
-- Docker Compose
+## Local Development Setup
+- Install Java 21 and Maven 3. Recommend using [SDKMAN](https://sdkman.io/).
+- Install [Docker](https://www.docker.com/). Recommend using [OrbStack](https://orbstack.dev/) for Macos. 
+- Install [IntelliJ](https://www.jetbrains.com/idea) IDEA or any of your favorite IDE
+- Install [Postman](https://www.postman.com/) or any REST Client
 
 ## How to run the services using Docker
 
